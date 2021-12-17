@@ -1,13 +1,16 @@
 const { DataTypes } = require('sequelize');
-const seq = require('../connection');
+const seq = require('../connection')
 
-const User = seq.define('user', {
-  // Model attributes are defined here
-  username: {
+const Lecturer = seq.define('lecturer', {
+  name: {
     type: DataTypes.STRING,
     allowNull: false
   },
-	pass: {
+	departmen: {
+		type: DataTypes.STRING,
+		allowNull: false
+	},
+	faculty: {
 		type: DataTypes.STRING,
 		allowNull: false
 	},
@@ -20,5 +23,4 @@ const User = seq.define('user', {
   // Other model options go here
 });
 
-module.exports = User
-
+module.exports = Lecturer
