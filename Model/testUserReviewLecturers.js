@@ -2,8 +2,8 @@ const Reviews = require('./review')
 const Lecturer = require('./lecturer')
 const User = require('./user')
 
-Lecturer.belongsToMany(User, { through: Reviews, as: "comments" });
-User.belongsToMany(Lecturer, { through: Reviews, as: "comments" });
+Lecturer.belongsToMany(User, { through: Reviews, as: "reviewers" });
+User.belongsToMany(Lecturer, { through: Reviews, as: "professors" });
 
 const getMethods = (obj) => {
   let properties = new Set()

@@ -1,24 +1,15 @@
 const { DataTypes } = require('sequelize');
 const seq = require('../connection')
 
-const Lecturer = seq.define('lecturer', {
+const Subject = seq.define('subject', {
   name: {
     type: DataTypes.STRING,
     allowNull: false
   },
-	department: {
+	obligatory: {
 		type: DataTypes.STRING,
-		allowNull: false
-	},
-	faculty: {
-		type: DataTypes.STRING,
-		allowNull: false
-	},
-  email: {
-    type: DataTypes.STRING(100),
-		allowNull: false,
-		unique: true
-  }
+		default: false
+	}
 }, {
   // Other model options go here
 });

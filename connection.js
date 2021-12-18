@@ -2,7 +2,7 @@ const { Sequelize } = require('sequelize');
 const database = 'sandbox'
 const username = 'express'
 const password = 'express'
-// Option 3: Passing parameters separately (other dialects)
+
 const seq = new Sequelize(database, username, password, {
   host: '10.0.0.48',
   dialect: 'mysql'
