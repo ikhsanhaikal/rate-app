@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const seq = require('../connection')
 
-const Reviews = seq.define('reviews', {
+const Review = seq.define('reviews', {
   text: {
     type: DataTypes.TEXT,
     allowNull: false
@@ -18,7 +18,7 @@ const Reviews = seq.define('reviews', {
   // Other model options go here
 });
 
-module.exports = Reviews
+module.exports = Review
 
 
 
