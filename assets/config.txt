@@ -1,0 +1,56 @@
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'secret';
+FLUSH PRIVILEGES;
+
+SELECT user,authentication_string,plugin,host FROM mysql.user;
+
+CREATE USER 'slave'@'10.0.0.241' IDENTIFIED BY 'secret-slave';
+	GRANT REPLICATION SLAVE ON *.* TO 'slave'@'10.0.0.241';
+
+show master status
+File: mysql-bin.000004
+         Position: 615
+File: mysql-bin.000005
+         Position: 154
+
+CHANGE MASTER TO MASTER_HOST='10.0.0.48', MASTER_USER='slave', MASTER_PASSWORD='secret-slave', MASTER_LOG_FILE='mysql-bin.000005', MASTER_LOG_POS=154;
+
+CREATE USER 'express'@'10.0.0.80' IDENTIFIED BY 'express';
+GRANT ALL PRIVILEGES ON *.* TO 'express'@'10.0.0.80' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+
+ /etc/redis/redis.conf
+        - comment 'bind 127.0.0.1 ::1'
+        - set 'protected-mode' to 'no'
+        - slaveof 10.0.0.162 6379 untuk semua slave
+
+[semua sentinel]
+sudo systemctl restart redis
+
+sudo redis-server /etc/redis/sentinel.conf --sentinel
+
+tambahan file /etc/systemd/system/sentinel.service
+
+Description=Sentinel for Redis
+After=network.target
+
+[Service]
+Type=forking
+User=redis
+Group=redis
+PIDFile=/var/run/redis/sentinel.pid
+ExecStart=/usr/bin/redis-server /etc/redis/sentinel.conf --sentinel
+ExecStop=/bin/kill -s TERM $MAINPID
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
+sudo chown redis:redis /etc/redis/sentinel.conf
+sudo chown redis:redis /var/log/redis/sentinel.log
+sudo chmod 640 /etc/redis/sentinel.conf
+sudo chmod 660 /var/log/redis/sentinel.log
+
+sudo systemctl daemon-reload
+sudo systemctl enable sentinel.service
+
+sudo systemctl start sentinel
